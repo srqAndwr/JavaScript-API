@@ -123,7 +123,7 @@ function flattening(arr) {
  * @param {*} fn 
  * @returns Boolean
  */
-Array.prototype.some = function (fn) {
+Array.prototype.mySome = function (fn) {
     let arr = this;
     for (let i = 0; i < arr.length; i++) {
         if (fn(arr[i])) {
@@ -138,7 +138,7 @@ Array.prototype.some = function (fn) {
  * @param {*} fn 
  * @returns Boolean
  */
-Array.prototype.every = function (fn) {
+Array.prototype.myEvery = function (fn) {
     let arr = this;
     for (let i = 0; i < arr.length; i++) {
         if (!fn(arr[i])) {
