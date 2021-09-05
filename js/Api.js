@@ -202,3 +202,37 @@ let a = new A();
 
 console.log(myInstanceOf(a, A));
 */
+
+/**
+ * 手写Object.creat()
+ * @param {*} pre 
+ * @param  {...any} args 
+ * @returns Object
+ */
+Object.prototype.myCreat = function (pre, ...args) {
+    function fn() { };
+    fn.prototype = pre;
+    fn.prototype.constructor = fn;
+    if (args) {
+        for (let item of [...args]) {
+            let keys = Object.keys(item);
+            for (let key of keys) {
+                fn[key] = item[key];
+            }
+        }
+    }
+    return new fn();
+}
+
+/*
+let Animal = {
+    name: '小猫咪',
+    age: 3
+}
+
+let cat1 = Object.myCreat(Animal, { p: 1 }, { type: 'animal' });
+let cat2 = new Object(Animal);
+console.log(cat1.__proto__);
+
+console.log(cat2);
+*/
