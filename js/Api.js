@@ -160,7 +160,7 @@ function myNew(pre, ...arg) {
     let k = pre.call(obj, ...arg);
     return typeof k === 'object' ? k : obj;
 }
-
+/*
 function Animal(name, age) {
     let that = this;
     that.name = name;
@@ -179,3 +179,26 @@ let cat = myNew(Animal, '小猫咪', 3);
 console.log(cat);
 cat.eat();
 cat.dance();
+*/
+
+/**
+ * 手写instanceOf方法
+ * @param {*} obj 
+ * @param {*} pre 
+ * @returns Boolean
+ */
+function myInstanceOf(obj, pre) {
+    obj = obj.__proto__;
+    pre = pre.prototype;
+    while (1) {
+        if (obj === null) return false;
+        if (obj === pre) return true;
+        obj = obj.__proto__;
+    }
+}
+/*
+function A() { }
+let a = new A();
+
+console.log(myInstanceOf(a, A));
+*/
