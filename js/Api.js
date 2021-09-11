@@ -5,7 +5,7 @@
  * @returns FunctionResult
  */
 Function.prototype.myCall = function (context, ...args) {
-    context = Object(context) || window;
+    context = (context !== undefined && context !== null) ? Object(context) : window;
     context.fn = this;
     args = args ? args : [];
     let result = context.fn(...args);
@@ -21,13 +21,32 @@ Function.prototype.myCall = function (context, ...args) {
  * @returns FunctionResult
  */
 Function.prototype.myApply = function (context, args) {
-    context = Object(context) || window;
+    context = (context !== undefined && context !== null) ? Object(context) : window;
     context.fn = this;
     args = args ? args : [];
     let result = context.fn(...args);
     delete context.fn;
     return result;
 }
+
+/**
+ * 手写bind
+ * @param {*} context 
+ * @param  {...any} args 
+ * @returns function
+ */
+Function.prototype.myBind = function (context, ...args) {
+    context = (context !== undefined && context !== null) ? Object(context) : window;
+    context.fn = this;
+    function proxyFn(...argArray) {
+        let result = context.fn(...[...args, ...argArray]);
+        delete context.fn;
+        return result;
+    }
+    return proxyFn;
+}
+
+
 /**
  * 手写map迭代
  * @param {*} fn 
@@ -42,7 +61,7 @@ Array.prototype.myMap = function (fn) {
     return res;
 }
 /**
- * 手写froeach迭代
+ * 手写foreach迭代
  * @param {*} fn 
  */
 Array.prototype.myForeach = function (fn) {
