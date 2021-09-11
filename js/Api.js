@@ -5,10 +5,14 @@
  * @returns FunctionResult
  */
 Function.prototype.myCall = function (context, ...args) {
-    context = context || window;
+    context = Object(context) || window;
     context.fn = this;
-    return context.fn(...args);
+    args = args ? args : [];
+    let result = context.fn(...args);
+    delete context.fn;
+    return result;
 }
+
 
 /**
  * 手写apply
@@ -17,11 +21,13 @@ Function.prototype.myCall = function (context, ...args) {
  * @returns FunctionResult
  */
 Function.prototype.myApply = function (context, args) {
-    context = context || window;
+    context = Object(context) || window;
     context.fn = this;
-    return context.fn(...args);
+    args = args ? args : [];
+    let result = context.fn(...args);
+    delete context.fn;
+    return result;
 }
-
 /**
  * 手写map迭代
  * @param {*} fn 
