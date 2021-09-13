@@ -261,3 +261,28 @@ console.log(cat1.__proto__);
 
 console.log(cat2);
 */
+
+/**
+ * 手写柯里化
+ * @param {*} fn 
+ * @returns function
+ */
+function myCurring(fn) {
+    let curring = function (...args) {
+        if (args.length >= fn.length) {
+            return fn.call(this, ...args);
+        } else {
+            return curring.bind(this, ...args);
+        }
+    }
+    return curring;
+}
+
+// function add(num1, num2, num3) {
+//     return num1 + num2 + num3;
+// }
+
+
+// const sum = myCurring(add);
+
+// console.log(sum(1)(2, 3));
