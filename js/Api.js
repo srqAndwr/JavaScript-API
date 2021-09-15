@@ -286,3 +286,37 @@ function myCurring(fn) {
 // const sum = myCurring(add);
 
 // console.log(sum(1)(2, 3));
+
+/**
+ * 实现组合函数
+ * @param  {...any} fns 
+ * @returns 
+ */
+function myCompose(...fns) {
+    let length = fns.length;
+    for (let i = 0; i < length; i++) {
+        if (typeof fns[i] !== 'function') {
+            throw new TypeError('fns[' + i + '] is not a function');
+        }
+    }
+    return function (...args) {
+        let index = 0;
+        let result = length ? fns[index++].call(this, ...args) : args;
+        while (index < length) {
+            result = fns[index++].call(this, result);
+        }
+        return result;
+    }
+}
+
+
+// function double(num) {
+//     return num * 2;
+// }
+// function square(num) {
+//     return num ** 2;
+// }
+
+// let composeFn = myCompose(double, square);
+
+// console.log(composeFn(10, 20, 40));
