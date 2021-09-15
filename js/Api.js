@@ -290,7 +290,7 @@ function myCurring(fn) {
 /**
  * 实现组合函数
  * @param  {...any} fns 
- * @returns 
+ * @returns function
  */
 function myCompose(...fns) {
     let length = fns.length;
