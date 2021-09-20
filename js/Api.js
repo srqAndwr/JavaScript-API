@@ -321,3 +321,89 @@ function myCompose(...fns) {
 
 // console.log(composeFn(10, 20, 40));
 
+/**
+ * 实现Promise
+ * @param {*} fn 
+ */
+function MyPromise(fn) {
+    let _this = this;
+    _this.status = 'pending';
+    _this.result = undefined;
+    _this.error = undefined;
+    _this.resolve = function (result) {
+        if (_this.status === 'pending') {
+            _this.status = 'fullfilled';
+            _this.result = result;
+        }
+    };
+    _this.reject = function (error) {
+        if (_this.status === 'pending') {
+            _this.status = 'rejected';
+            _this.error = error;
+        }
+    };
+    _this.then = function (resolve, reject = null) {
+        if (_this.status === 'fullfilled') {
+            resolve(_this.result);
+            // return _this;
+        } else if (_this.status === 'rejected' && reject) {
+            reject(_this.error);
+            // return _this;
+        } else return;
+    };
+    _this.catch = function (reject) {
+        if (_this.status === 'rejected') {
+            reject(_this.error);
+            // return _this;
+        } else return;
+    }
+    try {
+        fn(_this.resolve, _this.reject);
+    } catch (error) {
+        _this.reject(error);
+    }
+}
+
+
+MyPromise.all = function (myPromises) {
+    let results = [];
+    return new MyPromise((resolve, reject) => {
+        for (let i = 0; i < myPromises.length; i++) {
+            if (myPromises[i] instanceof MyPromise) {
+                myPromises[i].then(res => {
+                    results.push(res);
+                }, err => {
+                    reject(err);
+                    return;
+                });
+                if (i === myPromises.length - 1) {
+                    resolve(results);
+                }
+            } else {
+                results.push(myPromises[i]);
+            }
+        }
+    });
+}
+
+MyPromise.race = function (myPromises) {
+    return new MyPromise((reslove, reject) => {
+        if (myPromises[0] instanceof MyPromie) {
+            myPromises[0].then(res => resolve(res), err => reject(err));
+        } else {
+            resolve(myPromises[0]);
+        }
+    });
+}
+// let pro = new MyPromise((resolve, reject) => {
+//     resolve({
+//         name: 'liyansong'
+//     });
+// });
+// console.log(pro);
+// pro.then(res => console.log(res.name));
+
+let proA = new MyPromise.all([new MyPromise(resolve => resolve(1)), '21313', new MyPromise((reslove, reject) => reslove(2)), new MyPromise(resolve => resolve(3))]);
+proA.then(ress => console.log(ress), err => console.log(err));
+let proR = new MyPromise.all([new MyPromise(resolve => resolve(1)), '21313', new MyPromise((reslove, reject) => reslove(2)), new MyPromise(resolve => resolve(3))]);
+proR.then(res => console.log(res => console.log(res)),err => console.log(err));
