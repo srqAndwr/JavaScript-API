@@ -320,3 +320,4 @@ function myCompose(...fns) {
 // let composeFn = myCompose(double, square);
 
 // console.log(composeFn(10, 20, 40));
+
